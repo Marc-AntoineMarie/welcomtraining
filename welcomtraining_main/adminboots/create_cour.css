@@ -1,0 +1,28 @@
+/* Style du conteneur principal du formulaire */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: #f8f9fa;
+  }
+  
+  /* Titre du formulaire */
+  h2 {
+    color: #007bff;
+  }
+  
+  /* Espacement autour des champs de formulaire */
+  .form-label {
+    font-weight: bold;
+  }
+  
+  /* Style pour le bouton */
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+  }
+  
