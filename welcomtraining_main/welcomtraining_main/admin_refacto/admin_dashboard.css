@@ -1,0 +1,64 @@
+/* Réduction globale pour un style compact */
+.small-form-container {
+  max-width: 800px; /* Contrôle de la largeur globale */
+  margin: 0 auto; /* Centrage horizontal */
+  padding: 20px;
+}
+
+/* Carte réduite */
+.small-card {
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* En-tête */
+.small-card-header {
+  background-color: #6a4ec4;
+  color: #ffffff;
+  font-size: 1rem; /* Taille réduite */
+  text-align: center;
+  padding: 10px;
+}
+
+/* Champs réduits */
+.small-input {
+  height: 35px; /* Hauteur réduite */
+  font-size: 0.9rem; /* Texte plus petit */
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+.small-select {
+  height: 35px;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  padding: 5px 10px;
+}
+
+/* Bouton réduit */
+.small-btn {
+  padding: 8px 30px;
+  font-size: 1rem;
+  border-radius: 8px;
+  background-color: #6a4ec4;
+  color: #fff;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.small-btn:hover {
+  background-color: #573aa0;
+  transform: scale(1.03);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Espacement réduit entre les champs */
+.small-row > div {
+  margin-bottom: 10px; 
+}
+
+#dashboard-title {
+  margin-top: 2%; 
+
+}

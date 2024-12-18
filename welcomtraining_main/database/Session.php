@@ -7,8 +7,6 @@ session_start();
 if (!isset($_SESSION['iduser'])) {
     header("Location: ../login/login.php");
     exit();
-} else {
-    echo"l'utilisateur est connecer";
 }
 
 // déconnexion de la session 

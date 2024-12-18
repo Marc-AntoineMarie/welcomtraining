@@ -1,0 +1,62 @@
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding-top: 70px; /* Compense la barre de navigation fixe */
+}
+
+.header-info {
+    margin-bottom: 30px;
+    color: #4A90E2;
+}
+
+.class-container {
+    margin-bottom: 40px;
+}
+
+.class-header {
+    background-color: #4A90E2;
+    color: white;
+    padding: 15px;
+    border-radius: 10px 10px 0 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.class-table {
+    border: 1px solid #dee2e6;
+    border-radius: 0 0 10px 10px;
+    overflow: hidden;
+    background-color: white;
+}
+
+table {
+    margin: 0;
+}
+
+table thead th {
+    background-color: #f1f1f1;
+    color: #333;
+}
+
+table tbody tr {
+    transition: background-color 0.3s;
+}
+
+table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+.no-courses {
+    text-align: center;
+    font-size: 18px;
+    color: #6c757d;
+    margin-top: 30px;
+}
+
+footer {
+    margin-top: 50px;
+    text-align: center;
+    color: #6c757d;
+    font-size: 14px;
+}

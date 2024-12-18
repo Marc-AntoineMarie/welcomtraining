@@ -1,0 +1,43 @@
+/* Styles globaux */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.bg-purple {
+    background-color: #6c5ce7; 
+}
+
+main {
+    padding-top: 100px;
+}
+
+/* Styles pour les cartes */
+.card {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); 
+    margin: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+
+/* Styles pour les boutons */
+.blob-btn {
+    text-decoration: none; 
+    transition: transform 0.3s ease; 
+    display: inline-block;
+    width: 100%;
+    padding: 15px;
+    color: wheat;
+
+}
+
+.blob-btn:hover {
+    transform: scale(1.1); /* Agrandissement léger au survol */
+}

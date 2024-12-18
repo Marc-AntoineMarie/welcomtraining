@@ -1,125 +1,48 @@
-<?php 
+<?php
 
-//Gestion utilisateur
-class User_management {
+// Récupérer la liste des utilisateurs
+$usersResult = $conn->query("SELECT user.iduser, user.identifiant, user.mail, user.classe_ID_classe, user.etat, classe.Nom AS class_name 
+FROM user 
+LEFT JOIN classe ON user.classe_ID_classe = classe.ID_classe
+ORDER BY user.classe_ID_classe ASC");
 
-    private $pdo;
-    private $UserRecoverySQLRequest = "SELECT * FROM user";
-    private $ClassroomRecoverySQLRequest = "SELECT * FROM classe";
+// Récupérer les utilisateurs par rôle
+$teachers_result = $conn->query("SELECT iduser, identifiant, mail, classe_ID_classe, etat FROM user WHERE etat = 'teacher'");
+$students_result = $conn->query("SELECT iduser, identifiant, mail, classe_ID_classe, etat FROM user WHERE etat = 'student'");
+$visitors_result = $conn->query("SELECT iduser, identifiant, mail, classe_ID_classe, etat FROM user WHERE etat = 'visitor'");
+$admins_result = $conn->query("SELECT iduser, identifiant, mail, classe_ID_classe, etat FROM user WHERE etat = 'admin'");
 
-    function __construct($pdo) {
-        $this->pdo = $pdo;
+// Récupérer les classes pour le champ de sélection
+$classes_result = $conn->query("SELECT ID_classe, Nom FROM classe");
+
+// Traitement du formulaire d'ajout d'utilisateur
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add_user') {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $etat = $_POST['etat'];
+    $password = $_POST['password'];
+    $classe_ID_classe = $_POST['classe_ID_classe'];
+
+    // Hashage du mot de passe
+    $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
+    // Préparation de la requête d'insertion
+    $stmt = $conn->prepare("INSERT INTO user (identifiant, mail, etat, mdp, classe_ID_classe) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssi", $name, $email, $etat, $hashed_password, $classe_ID_classe);
+
+    if ($stmt->execute()) {
+        // Enregistrer le message de succès dans la session
+        $_SESSION['message'] = "Utilisateur ajouté avec succès.";
+    } else {
+        $_SESSION['message'] = "Erreur lors de l'ajout de l'utilisateur.";
     }
 
-    //récupération des utilisateurs
-    function UserRecovery() {
-        $stmt = $this->pdo->prepare($this->UserRecoverySQLRequest);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-    
-// Méthode pour gérer le traitement du formulaire et ajouter un utilisateur
-    public function handleAddUserForm() {
-        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add_user') {
-            try {
-                // Récupération et validation des données du formulaire
-                $name = $_POST['name'];
-                $email = $_POST['email'];
-                $etat = $_POST['etat'];
-                $password = $_POST['password'];
-                $classe_ID_classe = $_POST['classe_id_classe'];
+    $stmt->close();
 
-                // Appel de la méthode pour ajouter un utilisateur
-                $message = $this->addUser($name, $email, $etat, $password, $classe_ID_classe);
-
-                // Stocker le message dans la session
-                $_SESSION['message'] = $message;
-
-                // Redirection
-                header("Location: " . $_SERVER['PHP_SELF']);
-                exit();
-
-            } catch (Exception $e) {
-                $_SESSION['message'] = "Erreur : " . $e->getMessage();
-                header("Location: " . $_SERVER['PHP_SELF']);
-                exit();
-            }
-        }
-    }
-
-    // Méthode pour ajouter un utilisateur
-    private function addUser($name, $email, $etat, $password, $classe_ID_classe) {
-        try {
-            // Hashage du mot de passe
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            // Préparation de la requête
-            $stmt = $this->pdo->prepare(
-                "INSERT INTO user (identifiant, mail, etat, mdp, classe_ID_classe) VALUES (?, ?, ?, ?, ?)"
-            );
-            $stmt->execute([$name, $email, $etat, $hashed_password, $classe_ID_classe]);
-
-            return "Utilisateur ajouté avec succès.";
-        } catch (PDOException $e) {
-            return "Erreur lors de l'ajout de l'utilisateur : " . $e->getMessage();
-        }
-    }
-
-    //récupération des classes
-    function ClassroomRecovery() {
-        $stmt = $this->pdo->prepare($this->ClassroomRecoverySQLRequest);
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
-    //Fontion pour mettre à jour la classe d'un utilisateur
-    function updateUserClass($conn, $userId, $newClassId) {
-        $stmt = $conn->prepare("UPDATE user SET classe_ID_classe = ? WHERE iduser = ?");
-        $stmt->bind_param("ii", $newClassId, $userId);
-        
-        return $stmt->execute() ? true : false;
-    }
-
-    // Fonction pour ajouter une nouvelle classe
-    function addClass($conn, $className) {
-        $stmt = $conn->prepare("INSERT INTO classe (Nom) VALUES (?)");
-        $stmt->bind_param("s", $className);
-        
-        return $stmt->execute() ? true : false;
-    }
-
+    // Rediriger vers la même page pour éviter le double envoi
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit();
 }
-
-
-// Traitement du formulaire d'ajout d'utilisateur (Normalement c gerer mon frere mais je laisse la au cas ou psk j'ai pas fini les testes unitaires)
-// if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'add_user') {
-//     $name = $_POST['name'];
-//     $email = $_POST['email'];
-//     $etat = $_POST['etat'];
-//     $password = $_POST['password'];
-//     $classe_ID_classe = $_POST['classe_ID_classe'];
-
-//     // Hashage du mot de passe
-//     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-//     // Préparation de la requête d'insertion
-//     $stmt = $conn->prepare("INSERT INTO user (identifiant, mail, etat, mdp, classe_ID_classe) VALUES (?, ?, ?, ?, ?)");
-//     $stmt->bind_param("ssssi", $name, $email, $etat, $hashed_password, $classe_ID_classe);
-
-//     if ($stmt->execute()) {
-//         // Enregistrer le message de succès dans la session
-//         $_SESSION['message'] = "Utilisateur ajouté avec succès.";
-//     } else {
-//         $_SESSION['message'] = "Erreur lors de l'ajout de l'utilisateur.";
-//     }
-
-//     $stmt->close();
-
-//     // Rediriger vers la même page pour éviter le double envoi
-//     header("Location: " . $_SERVER['PHP_SELF']);
-//     exit();
-// }
-
 
 // Traitement de la requête de suppression d'utilisateur
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] === 'delete_user') {
@@ -140,6 +63,22 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     // Rediriger vers la même page pour éviter le double envoi
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
+}
+
+// Fonction pour mettre à jour la classe d'un utilisateur
+function updateUserClass($conn, $userId, $newClassId) {
+    $stmt = $conn->prepare("UPDATE user SET classe_ID_classe = ? WHERE iduser = ?");
+    $stmt->bind_param("ii", $newClassId, $userId);
+    
+    return $stmt->execute() ? true : false;
+}
+
+// Fonction pour ajouter une nouvelle classe
+function addClass($conn, $className) {
+    $stmt = $conn->prepare("INSERT INTO classe (Nom) VALUES (?)");
+    $stmt->bind_param("s", $className);
+    
+    return $stmt->execute() ? true : false;
 }
 
 // Traitement des requêtes POST
@@ -220,12 +159,4 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['a
     header("Location: " . $_SERVER['PHP_SELF']);
     exit();
 }
-
-$UserManager = new User_management($pdo);
-$User_data = $UserManager->UserRecovery();
-$ClassroomData = $UserManager->ClassroomRecovery();
-foreach ($User_data as $user) {
-    echo $user['iduser']; // Exemple d'utilisation
-}
-
 ?>

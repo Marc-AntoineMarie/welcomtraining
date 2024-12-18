@@ -1,0 +1,85 @@
+/* Style général */
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #f4f4f4;
+}
+
+/* Conteneur de signature */
+.signature-container {
+    text-align: center;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 600px;
+    width: 100%;
+}
+
+/* Zone de dessin */
+canvas {
+    border: 2px solid #ddd;
+    background-color: #fff;
+    cursor: crosshair;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+/* Boutons de contrôle */
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* Couleurs des boutons */
+#returnButton {
+    background-color: #6c757d; /* Gris pour annuler */
+}
+
+#clearButton {
+    background-color: #e74c3c; /* Rouge pour effacer */
+}
+
+#saveButton {
+    background-color: #3498db; /* Bleu pour envoyer */
+}
+
+/* Effet au survol des boutons */
+button:hover {
+    opacity: 0.8;
+}
+
+/* Style de l'image sauvegardée */
+img {
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    margin-top: 20px;
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Style additionnel pour la div contenu */
+.content {
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    margin-top: 20px;
+}

@@ -48,6 +48,4 @@ class ShowCourForm {
     }
 };
 
-$formManager = new ShowCourForm($pdo);
-$cours_data = $formManager->TeacherRecovery();
 ?>
